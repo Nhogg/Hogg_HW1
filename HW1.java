@@ -1,6 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION  HERE ***
+ * *** Nathan Hogg - Section 002 ***
  *
  * Homework # 1 (Programming Assignment). This Java class defines some basic
  * manipulation operations on Linked-Lists and Stacks.
@@ -86,10 +86,22 @@ public class HW1 {
          * found in the linked-list that is less than thr parameter value passed.
          */
         public void removeElementsLT ( int ltValue ) {
+            Node current = this.head;
+            Node prev = null;
 
-            // YOUR CODE GOES HERE
-
-            return;
+            while (current != null) {
+                if (current.data < ltValue) {
+                    if (prev == null) {
+                        this.head = current.next;
+                    } else {
+                        prev.next = current.next;
+                    }
+                    current = current.next;
+                } else {
+                    prev = current;
+                    current = current.next;
+                }
+            }
         }
 
 
@@ -99,10 +111,22 @@ public class HW1 {
          */
 
         public void removeElement ( int value ) {
+            Node current = this.head;
+            Node prev = null;
 
-            // YOUR CODE GOES HERE
-
-            return;
+            while (current != null) {
+                if (current.data == value) {
+                    if (prev == null) {
+                        this.head = current.next;
+                    } else {
+                        prev.next = current.next;
+                    }
+                    current = current.next;
+                } else {
+                    prev = current;
+                    current = current.next;
+                }
+            }
         }
 
 
@@ -160,8 +184,26 @@ public class HW1 {
             Stack<Character> stack = new Stack<>();
             input = input.toLowerCase().replaceAll("\\s+", "");
 
-            // Your CODE GOES HERE
-            return false;
+            int length = input.length();
+            int middle = length / 2;
+            int start = length / 2;
+
+            for (int i = 0; i < middle; i++) {
+                stack.push(input.charAt(i));
+            }
+
+            if (length % 2 != 0) {
+                start++;
+            }
+
+            while (start < length) {
+                char currentElement = stack.pop();
+                if (currentElement != input.charAt(start))
+                    return false;
+                start++;
+            }
+
+            return true;
         }
 
 
@@ -181,9 +223,16 @@ public class HW1 {
          * completed, place them all back in teh original stack.
          */
         public static int findLargestK(Stack<Integer> stack, int k) {
+            Stack<Integer> temp = new Stack<>();
+            int largest = -1;
+            for (int i = 0; i < stack.size(); i++) {
+                temp.push(stack.get(i));
+                if (stack.get(i) == k) {
+                    largest = i;
+                }
+            }
 
-            // YOUR CODE GOES HERE
-            return -1;
+            return largest;
         }
 
     }  // End class Stacks
@@ -219,7 +268,7 @@ public class HW1 {
         */
 
         // RETURN THE CORRECT OPTION NUMBER LISTED ABOVE
-        return -1;
+        return 3;
     }
 
 
@@ -240,7 +289,7 @@ public class HW1 {
          */
 
         // RETURN THE CORRECT OPTION LISTED ABOVE
-        return -1;
+        return 2;
     }
 
 }
