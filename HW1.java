@@ -78,51 +78,64 @@ public class HW1 {
         }
 
 
-        /*
+        /**
          * Method removeElementsLT() - this method removes all nodes that contain a
          * value that is less than the provided parameter 'ltValue'.
+         * This method traverses the linked list and calls method removeElement()
+         * each time an element that is less than the ltValue parameter is met.
          *
-         * The method will invoke the method removeElements for each element
-         * found in the linked-list that is less than thr parameter value passed.
-         */
+         * @param ltValue int: value to check against linked list
+         **/
         public void removeElementsLT ( int ltValue ) {
             Node current = this.head;
-            Node prev = null;
 
+            // Traverse list until end is reached
             while (current != null) {
+                // Call removeElement() if current value is less than ltValue
+                // Since removeElement() handles the case of the head being removed,
+                // we don't need to worry about that here.
                 if (current.data < ltValue) {
-                    if (prev == null) {
-                        this.head = current.next;
-                    } else {
-                        prev.next = current.next;
-                    }
+                    removeElement(current.data);
+                    // Shift cursor up one element.
                     current = current.next;
                 } else {
-                    prev = current;
+                    // Base case for if element doesn't need to be removed.
                     current = current.next;
                 }
             }
         }
 
 
-        /*
+        /**
          * Method removeElement() - this method removes all nodes that contain a
          * value equal to the value the provided parameter 'value'.
-         */
+         * This method traverses the linked list and removes each instance
+         * of the value passed via the parameter.
+         *
+         * @param value int: value to remove
+         **/
 
         public void removeElement ( int value ) {
             Node current = this.head;
+            // Since removing an element impacts the next and previous element, we must
+            // keep track of each previous element.
             Node prev = null;
 
+            // Traverse the linked list until the end is reached
             while (current != null) {
+                // Check if current value is equal to the one to be removed
                 if (current.data == value) {
+                    // Special case for removing the head element
                     if (prev == null) {
                         this.head = current.next;
                     } else {
+                        // Shift previous cursor up one
                         prev.next = current.next;
                     }
+                    // shift cursor up by one
                     current = current.next;
                 } else {
+                    // base case if element is not found
                     prev = current;
                     current = current.next;
                 }
@@ -170,7 +183,7 @@ public class HW1 {
 
     static class Stacks {
 
-        /*
+        /**
          * Method isPalindrome() - This method will return the boolean value 'true'
          * or 'false' on if the passed in parameter string is a palindrome or not.
          *
@@ -178,36 +191,47 @@ public class HW1 {
          * Moreover, spaces are ignore, so both 'race car' and 'racecar' are plaindromes.
          *
          * The method should utilize the provided Stack class.
-         */
+         *
+         * @param input String: String to run Palindrome test on
+         **/
         public static boolean isPalindrome(String input) {
-
+            // Declare return value
+            boolean isPalindrome = true;
+            // Initialize new stack for input
             Stack<Character> stack = new Stack<>();
+            // Strip case of input
             input = input.toLowerCase().replaceAll("\\s+", "");
 
+            // Determine length of input String
             int length = input.length();
-            int middle = length / 2;
-            int start = length / 2;
+            // Calculate the middle index of input
+            int middle = length / 2, start = length / 2;
 
+            // Push input to stack
             for (int i = 0; i < middle; i++) {
                 stack.push(input.charAt(i));
             }
-
+            // Since odd-length strings have a letter right in the middle,
+            // we can discard that letter as it is the same for both halves.
             if (length % 2 != 0) {
                 start++;
             }
 
+            // Loop runs while we are not at the end of the String
             while (start < length) {
                 char currentElement = stack.pop();
+                // Check if the characters are different. If they are,
+                // the String is not a palindrome.
                 if (currentElement != input.charAt(start))
-                    return false;
+                    isPalindrome = false;
                 start++;
             }
 
-            return true;
+            return isPalindrome;
         }
 
 
-        /*
+        /**
          * Method findLargestk() - This method will return the largest index
          * position in the stack for the value specified by the parameter 'k'.
          *
@@ -215,23 +239,25 @@ public class HW1 {
          * on to the stack the values 3 4 9 4 4 7 4, in that order. And you pass the
          * value '4' for the parameter k, then the largest index position is index
          * location 6.
+         * Method uses the stack.get() function and a for loop to check each element
+         * in the stack and determine if it equals k. If it does, the largest variable
+         * is set to that index, until the top of the stack is reached.
          *
-         * The method should utilize the provided Stack class. This method should NOT
-         * destroy the passed in stack, meaning when the method returns, the passed in
-         * stack should be identical to when this method is passed. One trick as you
-         * pop elements off the passed in stack, place them in a temp stack. Then when
-         * completed, place them all back in teh original stack.
-         */
+         * @param stack Stack: the stack to analyze
+         * @param k int: the integer we are searching for
+         **/
         public static int findLargestK(Stack<Integer> stack, int k) {
-            Stack<Integer> temp = new Stack<>();
+            // Since the index of a stack starts at 0, we need to initialize our counter
+            // to -1. This is because, if the stack didn't contain the value, it would
+            // default to the zeroth position. This is incorrect.
             int largest = -1;
+            // iterate over each element in the stack.
             for (int i = 0; i < stack.size(); i++) {
-                temp.push(stack.get(i));
+                // Check if the current element is equal to k
                 if (stack.get(i) == k) {
                     largest = i;
                 }
             }
-
             return largest;
         }
 
